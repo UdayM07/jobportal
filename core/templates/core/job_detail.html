@@ -1,0 +1,141 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{ job.title }}{% endblock %}
+
+{% block content %}
+
+<div class="max-w-5xl mx-auto px-6 py-10">
+
+    <div class="bg-white rounded-2xl shadow-lg p-8">
+
+        <!-- Header -->
+
+        <div class="border-b pb-6">
+
+            <h1 class="text-4xl font-bold text-gray-800">
+                {{ job.title }}
+            </h1>
+
+            <p class="text-xl text-gray-600 mt-2">
+                {{ job.company.name }}
+            </p>
+
+        </div>
+
+        <!-- Job Information -->
+
+        <div class="grid md:grid-cols-2 gap-6 mt-8">
+
+            <div class="bg-gray-50 rounded-xl p-4">
+                <p class="text-gray-500 text-sm">Location</p>
+                <p class="font-semibold">{{ job.location }}</p>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl p-4">
+                <p class="text-gray-500 text-sm">Salary</p>
+                <p class="font-semibold">₹ {{ job.salary }}</p>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl p-4">
+                <p class="text-gray-500 text-sm">Job Type</p>
+                <p class="font-semibold">{{ job.job_type }}</p>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl p-4">
+                <p class="text-gray-500 text-sm">Work Mode</p>
+                <p class="font-semibold">{{ job.work_mode }}</p>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl p-4">
+                <p class="text-gray-500 text-sm">Experience</p>
+                <p class="font-semibold">{{ job.experience }}</p>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl p-4">
+                <p class="text-gray-500 text-sm">Vacancies</p>
+                <p class="font-semibold">{{ job.vacancy }}</p>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl p-4">
+                <p class="text-gray-500 text-sm">Application Deadline</p>
+                <p class="font-semibold">{{ job.application_deadline }}</p>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl p-4">
+                <p class="text-gray-500 text-sm">Posted By</p>
+                <p class="font-semibold">{{ job.created_by.username }}</p>
+            </div>
+
+        </div>
+
+        <!-- Description -->
+
+        <div class="mt-10">
+
+            <h2 class="text-2xl font-semibold mb-4">
+                Job Description
+            </h2>
+
+            <p class="text-gray-700 leading-8">
+                {{ job.description }}
+            </p>
+
+        </div>
+
+        <!-- Responsibilities -->
+
+        <div class="mt-10">
+
+            <h2 class="text-2xl font-semibold mb-4">
+                Responsibilities
+            </h2>
+
+            <p class="text-gray-700 leading-8">
+                {{ job.responsibilities }}
+            </p>
+
+        </div>
+
+        <!-- Requirements -->
+
+        <div class="mt-10">
+
+            <h2 class="text-2xl font-semibold mb-4">
+                Requirements
+            </h2>
+
+            <p class="text-gray-700 leading-8">
+                {{ job.requirements }}
+            </p>
+
+        </div>
+
+        <!-- Buttons -->
+
+        <div class="flex flex-col md:flex-row gap-4 mt-10">
+
+            <a href="{% url 'home' %}"
+               class="flex-1 text-center border border-gray-300 py-3 rounded-xl hover:bg-gray-100 transition">
+
+                Back
+
+            </a>
+
+            {% if user.is_authenticated and user.role == "Candidate" %}
+
+            <button
+                class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl transition">
+
+                Apply Now
+
+            </button>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

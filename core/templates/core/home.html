@@ -1,0 +1,223 @@
+{% extends "core/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="py-20">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <div class="text-center">
+
+            <h1 class="text-5xl font-bold text-gray-900 leading-tight">
+                Find Your Dream Job
+            </h1>
+
+            <p class="mt-5 text-lg text-gray-600 max-w-2xl mx-auto">
+                Search thousands of jobs from top companies and build your career with confidence.
+            </p>
+
+        </div>
+
+        
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
+
+            <div class="bg-white rounded-xl shadow p-6 text-center">
+                <h2 class="text-3xl font-bold text-blue-600">500+</h2>
+                <p class="text-gray-500 mt-2">Jobs</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow p-6 text-center">
+                <h2 class="text-3xl font-bold text-blue-600">120+</h2>
+                <p class="text-gray-500 mt-2">Companies</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow p-6 text-center">
+                <h2 class="text-3xl font-bold text-blue-600">10K+</h2>
+                <p class="text-gray-500 mt-2">Candidates</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow p-6 text-center">
+                <h2 class="text-3xl font-bold text-blue-600">98%</h2>
+                <p class="text-gray-500 mt-2">Success Rate</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Latest Jobs -->
+<section class="py-16 bg-white">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <div class="flex justify-between items-center mb-10">
+
+            <h2 class="text-3xl font-bold">
+                Latest Jobs
+            </h2>
+
+            <a href="{% url 'list_jobs' %}"
+               class="text-blue-600 hover:underline">
+                View All
+            </a>
+
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            {% for job in jobs %}
+
+            <div class="border rounded-2xl p-6 hover:shadow-xl transition">
+
+                <h3 class="text-xl font-semibold">
+                    {{ job.title }}
+                </h3>
+
+                <p class="text-gray-600 mt-2">
+                    {{ job.company.name }}
+                </p>
+
+                <p class="text-gray-500 mt-2">
+                    📍 {{ job.location }}
+                </p>
+
+                <p class="text-gray-500 mt-2">
+                    💼 {{ job.job_type }} • {{ job.work_mode }}
+                </p>
+
+                <p class="text-gray-500 mt-2">
+                    💰 ₹{{ job.salary }}
+                </p>
+
+                <p class="text-gray-600 mt-4 line-clamp-3">
+                    {{ job.description|truncatewords:20 }}
+                </p>
+
+                <div class="mt-6 flex gap-3">
+
+                    <a href="{% url 'job_detail' job.pk %}"
+                       class="flex-1 text-center border border-blue-600 text-blue-600 py-2 rounded-xl hover:bg-blue-50">
+                        View Details
+                    </a>
+
+                    {% if user.is_authenticated %}
+
+                        {% if user.role == "Recruiter" and job.created_by == user %}
+
+                            <a href="{% url 'edit' job.pk %}"
+                               class="flex-1 text-center bg-yellow-500 text-white py-2 rounded-xl hover:bg-yellow-600">
+                                Edit
+                            </a>
+
+                            <a href="{% url 'delete' job.pk %}"
+                               class="flex-1 text-center bg-red-600 text-white py-2 rounded-xl hover:bg-red-700">
+                                Delete
+                            </a>
+
+                        {% else %}
+
+                            <a href="#"
+                               class="flex-1 text-center bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700">
+                                Apply
+                            </a>
+
+                        {% endif %}
+
+                    {% else %}
+
+                        <a href="{% url 'login' %}"
+                           class="flex-1 text-center bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700">
+                            Apply
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="col-span-full text-center py-20">
+
+                <h2 class="text-2xl font-semibold text-gray-700">
+                    No Jobs Available
+                </h2>
+
+                <p class="text-gray-500 mt-3">
+                    Please check back later.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Why Choose -->
+<section class="py-20">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <h2 class="text-3xl font-bold text-center">
+            Why Choose JobPortal?
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-8 mt-14">
+
+            <div class="bg-white shadow rounded-2xl p-8">
+
+                <h3 class="text-xl font-semibold">
+                    Verified Companies
+                </h3>
+
+                <p class="mt-4 text-gray-600">
+                    Every recruiter is verified before posting jobs.
+                </p>
+
+            </div>
+
+            <div class="bg-white shadow rounded-2xl p-8">
+
+                <h3 class="text-xl font-semibold">
+                    Easy Applications
+                </h3>
+
+                <p class="mt-4 text-gray-600">
+                    Apply to jobs in just a few clicks.
+                </p>
+
+            </div>
+
+            <div class="bg-white shadow rounded-2xl p-8">
+
+                <h3 class="text-xl font-semibold">
+                    Career Growth
+                </h3>
+
+                <p class="mt-4 text-gray-600">
+                    Discover opportunities that match your skills.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

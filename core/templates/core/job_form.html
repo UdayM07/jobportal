@@ -1,0 +1,153 @@
+{% extends "core/base.html" %}
+
+{% block title %}Post Job{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto px-6 py-10">
+
+    <div class="bg-white shadow-lg rounded-2xl p-8">
+
+        <div class="mb-8">
+
+            <h1 class="text-3xl font-bold text-gray-800">
+                Post a New Job
+            </h1>
+
+            <p class="text-gray-500 mt-2">
+                Fill in the details below to publish a new job opening.
+            </p>
+
+        </div>
+
+        <form method="POST" class="space-y-6">
+
+            {% csrf_token %}
+
+            <div>
+                <label class="block font-medium mb-2">
+                    Job Title
+                </label>
+                {{ form.title }}
+                {{ form.title.errors }}
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+
+                <div>
+                    <label class="block font-medium mb-2">
+                        Salary
+                    </label>
+                    {{ form.salary }}
+                    {{ form.salary.errors }}
+                </div>
+
+                <div>
+                    <label class="block font-medium mb-2">
+                        Vacancy
+                    </label>
+                    {{ form.vacancy }}
+                    {{ form.vacancy.errors }}
+                </div>
+
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+
+                <div>
+                    <label class="block font-medium mb-2">
+                        Location
+                    </label>
+                    {{ form.location }}
+                    {{ form.location.errors }}
+                </div>
+
+                <div>
+                    <label class="block font-medium mb-2">
+                        Experience
+                    </label>
+                    {{ form.experience }}
+                    {{ form.experience.errors }}
+                </div>
+
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+
+                <div>
+                    <label class="block font-medium mb-2">
+                        Job Type
+                    </label>
+                    {{ form.job_type }}
+                    {{ form.job_type.errors }}
+                </div>
+
+                <div>
+                    <label class="block font-medium mb-2">
+                        Work Mode
+                    </label>
+                    {{ form.work_mode }}
+                    {{ form.work_mode.errors }}
+                </div>
+
+            </div>
+
+            <div>
+
+                <label class="block font-medium mb-2">
+                    Application Deadline
+                </label>
+
+                {{ form.application_deadline }}
+                {{ form.application_deadline.errors }}
+
+            </div>
+
+            <div>
+
+                <label class="block font-medium mb-2">
+                    Job Description
+                </label>
+
+                {{ form.description }}
+                {{ form.description.errors }}
+
+            </div>
+
+            <div>
+
+                <label class="block font-medium mb-2">
+                    Responsibilities
+                </label>
+
+                {{ form.responsibilities }}
+                {{ form.responsibilities.errors }}
+
+            </div>
+
+            <div>
+
+                <label class="block font-medium mb-2">
+                    Requirements
+                </label>
+
+                {{ form.requirements }}
+                {{ form.requirements.errors }}
+
+            </div>
+
+            <button
+                type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition">
+
+                Post Job
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
