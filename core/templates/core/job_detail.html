@@ -4,75 +4,79 @@
 
 {% block content %}
 
-<div class="max-w-5xl mx-auto px-6 py-10">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
 
-    <div class="bg-white rounded-2xl shadow-lg p-8">
+    <div class="bg-white rounded-2xl shadow-lg border p-8">
 
         <!-- Header -->
 
         <div class="border-b pb-6">
 
-            <h1 class="text-4xl font-bold text-gray-800">
+            <h1 class="text-4xl font-bold text-gray-900">
                 {{ job.title }}
             </h1>
 
-            <p class="text-xl text-gray-600 mt-2">
+            <p class="text-lg text-gray-500 mt-2">
                 {{ job.company.name }}
             </p>
 
+            <div class="flex flex-wrap gap-3 mt-6">
+
+                <span class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm">
+                    📍 {{ job.location }}
+                </span>
+
+                <span class="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm">
+                    {{ job.job_type }}
+                </span>
+
+                <span class="bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm">
+                    {{ job.work_mode }}
+                </span>
+
+                <span class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full text-sm">
+                    ₹{{ job.salary }}
+                </span>
+
+            </div>
+
         </div>
 
-        <!-- Job Information -->
+        <!-- Information -->
 
         <div class="grid md:grid-cols-2 gap-6 mt-8">
 
-            <div class="bg-gray-50 rounded-xl p-4">
-                <p class="text-gray-500 text-sm">Location</p>
-                <p class="font-semibold">{{ job.location }}</p>
+            <div class="bg-gray-50 rounded-xl p-5">
+                <p class="text-sm text-gray-500">Experience</p>
+                <p class="font-semibold text-lg">{{ job.experience }}</p>
             </div>
 
-            <div class="bg-gray-50 rounded-xl p-4">
-                <p class="text-gray-500 text-sm">Salary</p>
-                <p class="font-semibold">₹ {{ job.salary }}</p>
+            <div class="bg-gray-50 rounded-xl p-5">
+                <p class="text-sm text-gray-500">Vacancies</p>
+                <p class="font-semibold text-lg">{{ job.vacancy }}</p>
             </div>
 
-            <div class="bg-gray-50 rounded-xl p-4">
-                <p class="text-gray-500 text-sm">Job Type</p>
-                <p class="font-semibold">{{ job.job_type }}</p>
+            <div class="bg-gray-50 rounded-xl p-5">
+                <p class="text-sm text-gray-500">Application Deadline</p>
+                <p class="font-semibold text-lg">
+                    {{ job.application_deadline|date:"d M Y" }}
+                </p>
             </div>
 
-            <div class="bg-gray-50 rounded-xl p-4">
-                <p class="text-gray-500 text-sm">Work Mode</p>
-                <p class="font-semibold">{{ job.work_mode }}</p>
-            </div>
-
-            <div class="bg-gray-50 rounded-xl p-4">
-                <p class="text-gray-500 text-sm">Experience</p>
-                <p class="font-semibold">{{ job.experience }}</p>
-            </div>
-
-            <div class="bg-gray-50 rounded-xl p-4">
-                <p class="text-gray-500 text-sm">Vacancies</p>
-                <p class="font-semibold">{{ job.vacancy }}</p>
-            </div>
-
-            <div class="bg-gray-50 rounded-xl p-4">
-                <p class="text-gray-500 text-sm">Application Deadline</p>
-                <p class="font-semibold">{{ job.application_deadline }}</p>
-            </div>
-
-            <div class="bg-gray-50 rounded-xl p-4">
-                <p class="text-gray-500 text-sm">Posted By</p>
-                <p class="font-semibold">{{ job.created_by.username }}</p>
+            <div class="bg-gray-50 rounded-xl p-5">
+                <p class="text-sm text-gray-500">Recruiter</p>
+                <p class="font-semibold text-lg">
+                    {{ job.created_by.username }}
+                </p>
             </div>
 
         </div>
 
         <!-- Description -->
 
-        <div class="mt-10">
+        <section class="mt-10">
 
-            <h2 class="text-2xl font-semibold mb-4">
+            <h2 class="text-2xl font-bold mb-4">
                 Job Description
             </h2>
 
@@ -80,13 +84,13 @@
                 {{ job.description }}
             </p>
 
-        </div>
+        </section>
 
         <!-- Responsibilities -->
 
-        <div class="mt-10">
+        <section class="mt-10">
 
-            <h2 class="text-2xl font-semibold mb-4">
+            <h2 class="text-2xl font-bold mb-4">
                 Responsibilities
             </h2>
 
@@ -94,13 +98,13 @@
                 {{ job.responsibilities }}
             </p>
 
-        </div>
+        </section>
 
         <!-- Requirements -->
 
-        <div class="mt-10">
+        <section class="mt-10">
 
-            <h2 class="text-2xl font-semibold mb-4">
+            <h2 class="text-2xl font-bold mb-4">
                 Requirements
             </h2>
 
@@ -108,27 +112,27 @@
                 {{ job.requirements }}
             </p>
 
-        </div>
+        </section>
 
         <!-- Buttons -->
 
-        <div class="flex flex-col md:flex-row gap-4 mt-10">
+        <div class="flex flex-col sm:flex-row gap-4 mt-12">
 
-            <a href="{% url 'home' %}"
-               class="flex-1 text-center border border-gray-300 py-3 rounded-xl hover:bg-gray-100 transition">
+            <a href="{% url 'list_jobs' %}"
+               class="flex-1 text-center border border-gray-300 rounded-xl py-3 hover:bg-gray-100 transition">
 
-                Back
+                Back to Jobs
 
             </a>
 
             {% if user.is_authenticated and user.role == "Candidate" %}
 
-         <a href="{% url 'apply_job' job.pk %}">
-    <button
-        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl transition">
-        Apply Now
-    </button>
-</a>
+            <a href="{% url 'apply_job' job.pk %}"
+               class="flex-1 text-center bg-blue-600 text-white rounded-xl py-3 hover:bg-blue-700 transition">
+
+                Apply Now
+
+            </a>
 
             {% endif %}
 

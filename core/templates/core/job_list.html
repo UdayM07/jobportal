@@ -1,153 +1,241 @@
-{% extends "core/base.html" %}
-
-{% block title %}All Jobs{% endblock %}
-
+{% extends 'core/base.html' %}
 {% block content %}
 
-<section class="py-12">
+<section class="py-10">
 
-    <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
 
         <!-- Heading -->
+
         <div class="mb-10">
 
-            <h1 class="text-4xl font-bold text-gray-800">
-                All Jobs
+            <h1 class="text-4xl font-bold text-gray-900">
+                Explore Jobs
             </h1>
 
-            <p class="text-gray-500 mt-2">
-                Browse all available job opportunities.
+            <p class="text-gray-500 mt-3">
+                Find opportunities that match your skills and career goals.
             </p>
 
         </div>
 
+        <!-- Search & Filters -->
 
-        <!-- Search -->
+        <div class="bg-white rounded-2xl shadow-lg border p-6 mb-10">
 
-        <div class="mb-10 max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-5">
+            <form method="GET">
 
-            <form method="GET" class="grid md:grid-cols-3 gap-4">
+                <div class="grid lg:grid-cols-2 gap-4">
 
-                <input
-                    type="text"
-                    name="search"
-                    value="{{ search }}"
-                    placeholder="Job title or company"
-                    class="border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500">
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ request.GET.search }}"
+                        placeholder="Search by job title or company"
+                        class="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
 
-                <input
-                    type="text"
-                    name="location"
-                    value="{{ location }}"
-                    placeholder="Location"
-                    class="border rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500">
+                    <input
+                        type="text"
+                        name="location"
+                        value="{{ request.GET.location }}"
+                        placeholder="Location"
+                        class="w-full border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
 
-                    
+                </div>
 
-                <button
-                    type="submit"
-                    class="bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold">
-                    Search Jobs
-                </button>
+                <div class="grid md:grid-cols-3 gap-4 mt-5">
 
-                <select name="job_type" class="mt-6">
-                             <option value="">All Job Types</option>
-                             <option value="Full Time">Full-time</option>
-                             <option value="Part Time">Part-time</option>
-                             <option value="Internship">Internship</option>
-                            <option value="Contract">Contract</option>
-                            <option value="Contract">Contract</option>
-                            <option value="Contract">Contract</option>
-                </select>
-                <select name="work_mode">
-                  <option value="">All Work Modes</option>
-    <option value="On Site">On Site</option>
-    <option value="Hybrid">Hybrid</option>
-    <option value="Remote">Remote</option>
-</select>
+                    <select
+                        name="job_type"
+                        class="border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500">
 
-<select name="experience">
-    <option value="">All Experience</option>
-    <option value="Fresher">Fresher</option>
-    
-    <option value="0-1 Years">0-1 Years</option>
-    <option value="1-3 Years">1-3 Years</option>
-    <option value="3-5 Years">3-5 Years</option>
-    <option value="5+ Years">5+ Years</option>
-</select>
+                        <option value="">All Job Types</option>
+
+                        <option value="Full Time"
+                        {% if request.GET.job_type == "Full Time" %}selected{% endif %}>
+                            Full Time
+                        </option>
+
+                        <option value="Part Time"
+                        {% if request.GET.job_type == "Part Time" %}selected{% endif %}>
+                            Part Time
+                        </option>
+
+                        <option value="Internship"
+                        {% if request.GET.job_type == "Internship" %}selected{% endif %}>
+                            Internship
+                        </option>
+
+                        <option value="Contract"
+                        {% if request.GET.job_type == "Contract" %}selected{% endif %}>
+                            Contract
+                        </option>
+
+                    </select>
+
+                    <select
+                        name="work_mode"
+                        class="border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500">
+
+                        <option value="">All Work Modes</option>
+
+                        <option value="On Site"
+                        {% if request.GET.work_mode == "On Site" %}selected{% endif %}>
+                            On Site
+                        </option>
+
+                        <option value="Hybrid"
+                        {% if request.GET.work_mode == "Hybrid" %}selected{% endif %}>
+                            Hybrid
+                        </option>
+
+                        <option value="Remote"
+                        {% if request.GET.work_mode == "Remote" %}selected{% endif %}>
+                            Remote
+                        </option>
+
+                    </select>
+
+                    <select
+                        name="experience"
+                        class="border rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500">
+
+                        <option value="">All Experience</option>
+
+                        <option value="Fresher"
+                        {% if request.GET.experience == "Fresher" %}selected{% endif %}>
+                            Fresher
+                        </option>
+
+                        <option value="0-1 Years"
+                        {% if request.GET.experience == "0-1 Years" %}selected{% endif %}>
+                            0-1 Years
+                        </option>
+
+                        <option value="1-3 Years"
+                        {% if request.GET.experience == "1-3 Years" %}selected{% endif %}>
+                            1-3 Years
+                        </option>
+
+                        <option value="3-5 Years"
+                        {% if request.GET.experience == "3-5 Years" %}selected{% endif %}>
+                            3-5 Years
+                        </option>
+
+                        <option value="5+ Years"
+                        {% if request.GET.experience == "5+ Years" %}selected{% endif %}>
+                            5+ Years
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 mt-6">
+
+                    <button
+                        type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl transition">
+
+                        Search Jobs
+
+                    </button>
+
+                    <a href="{% url 'list_jobs' %}"
+                       class="border border-gray-300 px-6 py-3 rounded-xl text-center hover:bg-gray-100 transition">
+
+                        Clear Filters
+
+                    </a>
+
+                </div>
 
             </form>
 
-
-   
-
         </div>
 
+        <!-- Job Cards -->
 
+        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
 
+                        {% for job in jobs %}
 
-        <!-- Jobs -->
+            <div class="bg-white rounded-2xl border shadow-md hover:shadow-xl transition p-6 flex flex-col justify-between">
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div>
 
-            {% for job in jobs %}
+                    <h2 class="text-2xl font-bold text-gray-800">
+                        {{ job.title }}
+                    </h2>
 
-            <div class="border rounded-2xl p-6 bg-white hover:shadow-xl transition">
+                    <p class="text-gray-500 mt-2">
+                        {{ job.company.name }}
+                    </p>
 
-                <h2 class="text-xl font-semibold text-gray-800">
-                    {{ job.title }}
-                </h2>
+                    <div class="flex flex-wrap gap-2 mt-5">
 
-                <p class="text-gray-600 mt-2">
-                    {{ job.company.name }}
-                </p>
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+                            📍 {{ job.location }}
+                        </span>
 
-                <p class="text-gray-500 mt-2">
-                    📍 {{ job.location }}
-                </p>
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                            {{ job.job_type }}
+                        </span>
 
-                <p class="text-gray-500 mt-2">
-                    💼 {{ job.job_type }} • {{ job.work_mode }}
-                </p>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">
+                            {{ job.work_mode }}
+                        </span>
 
-                <p class="text-gray-500 mt-2">
-                    💰 ₹{{ job.salary }}
-                </p>
+                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+                            ₹{{ job.salary }}
+                        </span>
 
-                <p class="text-gray-600 mt-4">
-                    {{ job.description|truncatewords:20 }}
-                </p>
+                    </div>
 
+                    <p class="mt-5 text-gray-600 leading-7">
+                        {{ job.description|truncatewords:20 }}
+                    </p>
 
-                <!-- Buttons -->
+                </div>
 
-                <div class="mt-6 flex gap-3">
+                <div class="mt-8">
 
                     <a href="{% url 'job_detail' job.pk %}"
-                       class="flex-1 text-center border border-blue-600 text-blue-600 py-2 rounded-xl hover:bg-blue-50">
-                        View Details
-                    </a>
+                       class="block text-center border border-blue-600 text-blue-600 rounded-xl py-3 hover:bg-blue-50 transition">
 
+                        View Details
+
+                    </a>
 
                     {% if user.is_authenticated %}
 
                         {% if user.role == "Recruiter" and job.created_by == user %}
 
-                            <a href="{% url 'edit' job.pk %}"
-                               class="flex-1 text-center bg-yellow-500 text-white py-2 rounded-xl hover:bg-yellow-600">
-                                Edit
-                            </a>
+                            <div class="grid grid-cols-2 gap-3 mt-3">
 
-                            <a href="{% url 'delete' job.pk %}"
-                               class="flex-1 text-center bg-red-600 text-white py-2 rounded-xl hover:bg-red-700">
-                                Delete
-                            </a>
+                                <a href="{% url 'edit' job.pk %}"
+                                   class="text-center bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl py-3 transition">
+
+                                    Edit
+
+                                </a>
+
+                                <a href="{% url 'delete' job.pk %}"
+                                   class="text-center bg-red-600 hover:bg-red-700 text-white rounded-xl py-3 transition">
+
+                                    Delete
+
+                                </a>
+
+                            </div>
 
                         {% else %}
 
                             <a href="{% url 'job_detail' job.pk %}"
-                               class="flex-1 text-center bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700">
-                                Apply
+                               class="block text-center bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 mt-3 transition">
+
+                                Apply Now
+
                             </a>
 
                         {% endif %}
@@ -155,8 +243,10 @@
                     {% else %}
 
                         <a href="{% url 'login' %}"
-                           class="flex-1 text-center bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700">
-                            Apply
+                           class="block text-center bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 mt-3 transition">
+
+                            Login to Apply
+
                         </a>
 
                     {% endif %}
@@ -165,47 +255,72 @@
 
             </div>
 
-
             {% empty %}
 
-            <div class="col-span-full text-center py-20">
+            <div class="col-span-full">
 
-                <h2 class="text-2xl font-semibold text-gray-700">
-                    No Jobs Found
-                </h2>
+                <div class="bg-white rounded-2xl shadow-md p-12 text-center">
 
-                <p class="text-gray-500 mt-3">
-                    Try a different job title, company, or location.
-                </p>
+                    <h2 class="text-3xl font-bold text-gray-700">
+                        No Jobs Found
+                    </h2>
+
+                    <p class="mt-4 text-gray-500">
+                        Try changing your search or filter options.
+                    </p>
+
+                    <a href="{% url 'list_jobs' %}"
+                       class="inline-block mt-6 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl transition">
+
+                        Clear Filters
+
+                    </a>
+
+                </div>
 
             </div>
 
             {% endfor %}
-            {% if jobs.has_other_pages %}
-<div class="flex justify-center items-center gap-4 mt-10">
-
-    {% if jobs.has_previous %}
-        <a href="?page={{ jobs.previous_page_number }}"
-           class="px-5 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700">
-            Previous
-        </a>
-    {% endif %}
-
-    <span class="font-medium text-gray-700">
-        Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}
-    </span>
-
-    {% if jobs.has_next %}
-        <a href="?page={{ jobs.next_page_number }}"
-           class="px-5 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700">
-            Next
-        </a>
-    {% endif %}
-
-</div>
-{% endif %}
 
         </div>
+
+        <!-- Pagination -->
+
+        {% if jobs.has_other_pages %}
+
+        <div class="flex justify-center items-center gap-3 mt-12 flex-wrap">
+
+            {% if jobs.has_previous %}
+
+            <a href="?page={{ jobs.previous_page_number }}&search={{ request.GET.search }}&location={{ request.GET.location }}&job_type={{ request.GET.job_type }}&work_mode={{ request.GET.work_mode }}&experience={{ request.GET.experience }}"
+               class="px-5 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition">
+
+                Previous
+
+            </a>
+
+            {% endif %}
+
+            <span class="px-5 py-2 bg-gray-100 rounded-xl font-medium">
+
+                Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}
+
+            </span>
+
+            {% if jobs.has_next %}
+
+            <a href="?page={{ jobs.next_page_number }}&search={{ request.GET.search }}&location={{ request.GET.location }}&job_type={{ request.GET.job_type }}&work_mode={{ request.GET.work_mode }}&experience={{ request.GET.experience }}"
+               class="px-5 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition">
+
+                Next
+
+            </a>
+
+            {% endif %}
+
+        </div>
+
+        {% endif %}
 
     </div>
 

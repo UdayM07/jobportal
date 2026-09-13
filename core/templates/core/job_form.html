@@ -1,148 +1,255 @@
 {% extends "core/base.html" %}
 
-{% block title %}Post Job{% endblock %}
+{% block title %}
+{% if form.instance.pk %}
+Edit Job
+{% else %}
+Post Job
+{% endif %}
+{% endblock %}
 
 {% block content %}
 
-<div class="max-w-4xl mx-auto px-6 py-10">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 py-10">
 
-    <div class="bg-white shadow-lg rounded-2xl p-8">
+    <div class="bg-white rounded-2xl shadow-lg border p-8">
 
-        <div class="mb-8">
+        <!-- Heading -->
+
+        <div class="mb-10 border-b pb-6">
 
             <h1 class="text-3xl font-bold text-gray-800">
-                Post a New Job
+
+                {% if form.instance.pk %}
+                    Edit Job
+                {% else %}
+                    Post a New Job
+                {% endif %}
+
             </h1>
 
             <p class="text-gray-500 mt-2">
-                Fill in the details below to publish a new job opening.
+
+                {% if form.instance.pk %}
+                    Update the job details below.
+                {% else %}
+                    Fill in the details below to publish a new job opening.
+                {% endif %}
+
             </p>
 
         </div>
 
-        <form method="POST" class="space-y-6">
+        <form method="POST" class="space-y-8">
 
             {% csrf_token %}
 
+            <!-- Job Title -->
+
             <div>
-                <label class="block font-medium mb-2">
+
+                <label class="block font-semibold text-gray-700 mb-2">
                     Job Title
                 </label>
+
                 {{ form.title }}
-                {{ form.title.errors }}
+
+                <p class="text-red-600 text-sm mt-1">
+                    {{ form.title.errors }}
+                </p>
+
             </div>
+
+            <!-- Salary / Vacancy -->
 
             <div class="grid md:grid-cols-2 gap-6">
 
                 <div>
-                    <label class="block font-medium mb-2">
+
+                    <label class="block font-semibold text-gray-700 mb-2">
                         Salary
                     </label>
+
                     {{ form.salary }}
-                    {{ form.salary.errors }}
+
+                    <p class="text-red-600 text-sm mt-1">
+                        {{ form.salary.errors }}
+                    </p>
+
                 </div>
 
                 <div>
-                    <label class="block font-medium mb-2">
+
+                    <label class="block font-semibold text-gray-700 mb-2">
                         Vacancy
                     </label>
+
                     {{ form.vacancy }}
-                    {{ form.vacancy.errors }}
+
+                    <p class="text-red-600 text-sm mt-1">
+                        {{ form.vacancy.errors }}
+                    </p>
+
                 </div>
 
             </div>
 
+            <!-- Location / Experience -->
+
             <div class="grid md:grid-cols-2 gap-6">
 
                 <div>
-                    <label class="block font-medium mb-2">
+
+                    <label class="block font-semibold text-gray-700 mb-2">
                         Location
                     </label>
+
                     {{ form.location }}
-                    {{ form.location.errors }}
+
+                    <p class="text-red-600 text-sm mt-1">
+                        {{ form.location.errors }}
+                    </p>
+
                 </div>
 
                 <div>
-                    <label class="block font-medium mb-2">
+
+                    <label class="block font-semibold text-gray-700 mb-2">
                         Experience
                     </label>
+
                     {{ form.experience }}
-                    {{ form.experience.errors }}
+
+                    <p class="text-red-600 text-sm mt-1">
+                        {{ form.experience.errors }}
+                    </p>
+
                 </div>
 
             </div>
+
+            <!-- Job Type / Work Mode -->
 
             <div class="grid md:grid-cols-2 gap-6">
 
                 <div>
-                    <label class="block font-medium mb-2">
+
+                    <label class="block font-semibold text-gray-700 mb-2">
                         Job Type
                     </label>
+
                     {{ form.job_type }}
-                    {{ form.job_type.errors }}
+
+                    <p class="text-red-600 text-sm mt-1">
+                        {{ form.job_type.errors }}
+                    </p>
+
                 </div>
 
                 <div>
-                    <label class="block font-medium mb-2">
+
+                    <label class="block font-semibold text-gray-700 mb-2">
                         Work Mode
                     </label>
+
                     {{ form.work_mode }}
-                    {{ form.work_mode.errors }}
+
+                    <p class="text-red-600 text-sm mt-1">
+                        {{ form.work_mode.errors }}
+                    </p>
+
                 </div>
 
             </div>
+
+            <!-- Deadline -->
 
             <div>
 
-                <label class="block font-medium mb-2">
+                <label class="block font-semibold text-gray-700 mb-2">
                     Application Deadline
                 </label>
 
                 {{ form.application_deadline }}
-                {{ form.application_deadline.errors }}
+
+                <p class="text-red-600 text-sm mt-1">
+                    {{ form.application_deadline.errors }}
+                </p>
 
             </div>
 
+            <!-- Description -->
+
             <div>
 
-                <label class="block font-medium mb-2">
+                <label class="block font-semibold text-gray-700 mb-2">
                     Job Description
                 </label>
 
                 {{ form.description }}
-                {{ form.description.errors }}
+
+                <p class="text-red-600 text-sm mt-1">
+                    {{ form.description.errors }}
+                </p>
 
             </div>
 
+            <!-- Responsibilities -->
+
             <div>
 
-                <label class="block font-medium mb-2">
+                <label class="block font-semibold text-gray-700 mb-2">
                     Responsibilities
                 </label>
 
                 {{ form.responsibilities }}
-                {{ form.responsibilities.errors }}
+
+                <p class="text-red-600 text-sm mt-1">
+                    {{ form.responsibilities.errors }}
+                </p>
 
             </div>
 
+            <!-- Requirements -->
+
             <div>
 
-                <label class="block font-medium mb-2">
+                <label class="block font-semibold text-gray-700 mb-2">
                     Requirements
                 </label>
 
                 {{ form.requirements }}
-                {{ form.requirements.errors }}
+
+                <p class="text-red-600 text-sm mt-1">
+                    {{ form.requirements.errors }}
+                </p>
 
             </div>
 
-            <button
-                type="submit"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition">
+            <!-- Buttons -->
 
-                Post Job
+            <div class="flex flex-col sm:flex-row gap-4 pt-4">
 
-            </button>
+                <a href="{% url 'profile' %}"
+                   class="flex-1 text-center border border-gray-300 rounded-xl py-3 hover:bg-gray-100 transition">
+
+                    Cancel
+
+                </a>
+
+                <button
+                    type="submit"
+                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 font-semibold transition">
+
+                    {% if form.instance.pk %}
+                        Save Changes
+                    {% else %}
+                        Post Job
+                    {% endif %}
+
+                </button>
+
+            </div>
 
         </form>
 

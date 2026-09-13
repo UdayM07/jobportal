@@ -1,119 +1,191 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Job Portal{% endblock %}</title>
 
-    <link rel="stylesheet" href="{% static 'core/css/output.css' %}">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}JobPortal{% endblock %}
+    </title>
+
+    <link rel="stylesheet"
+          href="{% static 'core/css/output.css' %}">
+
 </head>
 
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
-  <!-- Navbar -->
-<nav class="bg-white shadow-md">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+<!-- ================= Navbar ================= -->
 
-        <a href="{% url 'home' %}" class="text-2xl font-bold text-blue-600">
-            JobPortal
-        </a>
+<nav class="bg-white shadow-md sticky top-0 z-50">
 
-        <div class="flex items-center space-x-6">
+    <div class="max-w-7xl mx-auto px-6">
 
-            <a href="{% url 'home' %}" class="hover:text-blue-600">
-                Home
+        <div class="flex items-center justify-between h-16">
+
+            <!-- Logo -->
+
+            <a href="{% url 'home' %}"
+               class="text-2xl font-bold text-blue-600">
+
+                JobPortal
+
             </a>
 
-            <a href="#" class="hover:text-blue-600">
-                Jobs
-            </a>
+            <!-- Navigation -->
 
-            <a href="#" class="hover:text-blue-600">
-                Companies
-            </a>
+            <div class="hidden md:flex items-center gap-6">
 
-            <a href="#" class="hover:text-blue-600">
-                About
-            </a>
+                <a href="{% url 'home' %}"
+                   class="text-gray-700 hover:text-blue-600 transition">
+                    Home
+                </a>
 
-            {% if user.is_authenticated %}
+                <a href="{% url 'list_jobs' %}"
+                   class="text-gray-700 hover:text-blue-600 transition">
+                    Jobs
+                </a>
 
-                {% if user.role == "Recruiter" %}
+                {% if user.is_authenticated %}
 
-                    <a href="{% url 'job_form' %}"
-                       class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                        Add Job
+                    {% if user.role == "Recruiter" %}
+
+                        <a href="{% url 'job_form' %}"
+                           class="text-gray-700 hover:text-blue-600 transition">
+                            Post Job
+                        </a>
+
+                    {% endif %}
+
+                    {% if user.role == "Candidate" %}
+
+                        <a href="{% url 'my_applications' %}"
+                           class="text-gray-700 hover:text-blue-600 transition">
+                            My Applications
+                        </a>
+
+                    {% endif %}
+
+                    <a href="{% url 'profile' %}"
+                       class="text-gray-700 hover:text-blue-600 transition">
+                        Profile
+                    </a>
+
+                    <a href="{% url 'logout' %}"
+                       class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-xl transition">
+                        Logout
+                    </a>
+
+                {% else %}
+
+                    <a href="{% url 'login' %}"
+                       class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl transition">
+
+                        Login
+
                     </a>
 
                 {% endif %}
 
-                {% if user.role == "Candidate" %}
+            </div>
 
-                    <a href="{% url 'my_applications' %}"
-                       class="hover:text-blue-600">
-                        My Applications
+            <!-- Mobile -->
+
+            <div class="md:hidden">
+
+                {% if user.is_authenticated %}
+
+                    <a href="{% url 'profile' %}"
+                       class="bg-blue-600 text-white px-4 py-2 rounded-lg">
+
+                        Profile
+
+                    </a>
+
+                {% else %}
+
+                    <a href="{% url 'login' %}"
+                       class="bg-blue-600 text-white px-4 py-2 rounded-lg">
+
+                        Login
+
                     </a>
 
                 {% endif %}
 
-                <a href="{% url 'profile' %}" class="hover:text-blue-600">
-                    Profile
-                </a>
-
-                <a href="{% url 'logout' %}"
-                   class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
-                    Logout
-                </a>
-
-            {% else %}
-
-                <a href="{% url 'login' %}"
-                   class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                    Login
-                </a>
-
-            {% endif %}
+            </div>
 
         </div>
 
     </div>
+
 </nav>
 
-    <!-- Messages -->
-    {% if messages %}
-        <div class="max-w-7xl mx-auto mt-4">
-            {% for message in messages %}
-                <div class="message p-4 mb-2 rounded bg-green-100 text-green-800">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+<!-- ================= Messages ================= -->
 
-    <!-- Main Content -->
-    <main class="flex-1 max-w-7xl mx-auto w-full px-6 py-8">
+{% if messages %}
 
-        {% block content %}
+<div class="max-w-7xl mx-auto w-full mt-5 px-6">
 
-        {% endblock %}
+    {% for message in messages %}
 
-    </main>
+    <div class="message bg-green-100 border border-green-300 text-green-700 rounded-xl p-4 mb-3">
 
-    <!-- Footer -->
-    <footer class="bg-white border-t mt-auto">
-        <div class="max-w-7xl mx-auto px-6 py-4 text-center text-gray-500">
-            © 2026 JobPortal. All Rights Reserved.
-        </div>
-    </footer>
+        {{ message }}
 
-    <script>
-    setTimeout(function () {
-        document.querySelectorAll(".message").forEach(function (message) {
-            message.style.display = "none";
-        });
-    }, 3000);
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
+
+<!-- ================= Main ================= -->
+
+<main class="flex-1 max-w-7xl mx-auto w-full px-6 py-8">
+
+    {% block content %}
+
+    {% endblock %}
+
+</main>
+
+<!-- ================= Footer ================= -->
+
+<footer class="bg-white border-t mt-10">
+
+    <div class="max-w-7xl mx-auto py-6 px-6 text-center">
+
+        <p class="text-gray-500">
+
+            © 2026 JobPortal • Built with Django & Tailwind CSS
+
+        </p>
+
+    </div>
+
+</footer>
+
+<script>
+
+setTimeout(function(){
+
+    document.querySelectorAll(".message").forEach(function(message){
+
+        message.style.display="none";
+
+    });
+
+},3000);
+
 </script>
 
 </body>
+
 </html>
