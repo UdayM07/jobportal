@@ -1,0 +1,88 @@
+{% extends "core/base.html" %}
+
+{% block title %}My Applications{% endblock %}
+
+{% block content %}
+
+<h1 class="text-3xl font-bold mb-8">
+    My Applications
+</h1>
+
+{% for application in applications %}
+
+<div class="bg-white rounded-xl shadow-md p-6 mb-6">
+
+    <h2 class="text-2xl font-semibold text-blue-600">
+        {{ application.job.title }}
+    </h2>
+
+    <div class="mt-4 space-y-2 text-gray-700">
+
+        <p>
+            <span class="font-semibold">Company:</span>
+            {{ application.job.company.name }}
+        </p>
+
+        <p>
+            <span class="font-semibold">Location:</span>
+            {{ application.job.location }}
+        </p>
+
+        <p>
+            <span class="font-semibold">Job Type:</span>
+            {{ application.job.job_type }}
+        </p>
+
+        <p>
+            <span class="font-semibold">Work Mode:</span>
+            {{ application.job.work_mode }}
+        </p>
+
+        <p>
+            <span class="font-semibold">Salary:</span>
+            ₹{{ application.job.salary }}
+        </p>
+
+        <p>
+            <span class="font-semibold">Applied By:</span>
+            {{ application.candidate.username }}
+        </p>
+
+        <p>
+            <span class="font-semibold">Applied On:</span>
+            {{ application.applied_at|date:"d M Y" }}
+        </p>
+
+    </div>
+
+    <div class="mt-6">
+        <a href="{% url 'job_detail' application.job.pk %}"
+           class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            View Job
+        </a>
+    </div>
+
+</div>
+
+{% empty %}
+
+<div class="bg-white rounded-xl shadow-md p-10 text-center">
+
+    <h2 class="text-2xl font-semibold text-gray-700">
+        No Applications Yet
+    </h2>
+
+    <p class="text-gray-500 mt-3">
+        Start applying for jobs to see them here.
+    </p>
+
+    <a href="{% url 'list_jobs' %}"
+       class="inline-block mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        Browse Jobs
+    </a>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}

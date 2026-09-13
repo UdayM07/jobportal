@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User,Company,Job
+from .models import User,Company,Job,Application
 
 from django.contrib.auth.admin import UserAdmin
 
@@ -25,4 +25,15 @@ class CustomJobModel(admin.ModelAdmin):
     search_fields=['title',"company"]
     ordering=['title',"company"]
     list_editable=['salary','work_mode']
+
+@admin.register(Application)
+class CustomApplication(admin.ModelAdmin):
+    list_display=['job','candidate','applied_at']
+    search_fields=['job', 'candidate']
+    list_editable=['candidate']
+
+    def job_created_by(self, obj):
+        return obj.job.created_by
+
+
     

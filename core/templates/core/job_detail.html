@@ -123,12 +123,12 @@
 
             {% if user.is_authenticated and user.role == "Candidate" %}
 
-            <button
-                class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl transition">
-
-                Apply Now
-
-            </button>
+         <a href="{% url 'apply_job' job.pk %}">
+    <button
+        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl transition">
+        Apply Now
+    </button>
+</a>
 
             {% endif %}
 

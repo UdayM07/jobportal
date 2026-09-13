@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .forms import RegisterForm,LoginForm,JobForm
 from django.contrib.auth import login,logout
-from .models import Company,Job
+from .models import Company,Job,Application
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.contrib import messages
 
 
 
@@ -157,3 +158,85 @@ def Profile(request):
     }
 
     return render(request, "core/profile.html", context)
+
+
+def apply_job(request, pk):
+    job = get_object_or_404(Job, pk=pk)
+
+    if not request.user.is_authenticated:
+        return redirect("login")
+
+    if request.user.role != "Candidate":
+        return redirect("home")
+
+    if Application.objects.filter(
+        job=job,
+        candidate=request.user
+    ).exists():
+        messages.warning(request,'you have already applied for this job')
+        return redirect("home")
+
+    Application.objects.create(
+        job=job,
+        candidate=request.user
+    )
+
+    messages.success(request, "Application submitted successfully.")
+    return redirect("list_jobs")
+
+
+def my_applications(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    if request.user.role!='Candidate':
+        return redirect('home')
+    applications=Application.objects.filter(candidate=request.user)
+    context={
+        'applications':applications
+    }
+    return render(request,'core/application.html',context)
+
+def applicants(request,pk):
+    if not request.user.is_authenticated:
+        return redirect('login')    
+    if request.user.role!='Recruiter':
+        return redirect('home')
+    selected_job=get_object_or_404(Job,pk=pk,created_by=request.user)
+    
+    applications=Application.objects.filter(
+        job=selected_job,
+    )
+    context={
+        'applications':applications,
+        'job':selected_job
+
+    }   
+    return render(request,'core/applicants.html',context)
+   
+   
+    
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+

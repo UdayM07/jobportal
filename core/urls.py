@@ -12,4 +12,12 @@ urlpatterns = [
     path("edit/<int:pk>/",views.edit_view,name='edit'),
     path("delete/<int:pk>/",views.delete_view,name='delete'),
     path("Profile/",views.Profile,name='profile'),
+    path("apply_job/<int:pk>/",views.apply_job,name='apply_job'),
+    path("my-applications/", views.my_applications, name="my_applications"),
+    path("applicants/<int:pk>/", views.applicants, name="applicants"),
+
+   
+    
+    
+
 ]
