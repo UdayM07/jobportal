@@ -7,6 +7,7 @@ from django.contrib.auth.admin import UserAdmin
 
 @admin.register(User)
 class CustomUserMOdel(admin.ModelAdmin):
+    list_display=['id','username']
     search_fields=['username']
     ordering=['username']
     list_filter=['is_active','is_staff','role']
@@ -21,7 +22,8 @@ class CustomCompanyModel(admin.ModelAdmin):
 
 @admin.register(Job)
 class CustomJobModel(admin.ModelAdmin):
-    list_display=['title','company','location','salary','work_mode','work_mode','experience']
+
+    list_display=['id','title','company','location','salary','work_mode','work_mode','experience']
     search_fields=['title',"company"]
     ordering=['title',"company"]
     list_editable=['salary','work_mode']

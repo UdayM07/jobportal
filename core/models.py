@@ -116,13 +116,7 @@ class Job(models.Model):
         return self.title
 
 
-# class Application(models.Model):
-#     job=models.ForeignKey(Job,on_delete=models.CASCADE)
-#     candidate=models.ForeignKey(User,on_delete=models.CASCADE)
-#     applied_at=models.DateTimeField(auto_now_add=True)
 
-#     class Meta:
-#         unique_together=('job','candidate')
 
 class Application(models.Model):
     job=models.ForeignKey(Job,on_delete=models.CASCADE)

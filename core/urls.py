@@ -16,6 +16,8 @@ urlpatterns = [
     path("my-applications/", views.my_applications, name="my_applications"),
     path("applicants/<int:pk>/", views.applicants, name="applicants"),
 
+    
+
    
     
     
