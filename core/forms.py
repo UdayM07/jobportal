@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from .models import User,Company,Job
+from django.contrib.auth.forms import AuthenticationForm
 
 
 class RegisterForm(UserCreationForm):
@@ -26,7 +27,26 @@ class RegisterForm(UserCreationForm):
                 "class": "w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
             })
 
-from django.contrib.auth.forms import AuthenticationForm
+    def clean(self):
+     cleaned_data = super().clean()
+
+     role = cleaned_data.get("role")
+     company = cleaned_data.get("company")
+
+     if role == "Recruiter" and not company:
+        raise forms.ValidationError({
+            "company": "Choose a company."
+        })
+
+     if role == "Candidate" and company:
+        raise forms.ValidationError({
+            "company": "Candidates cannot choose a company."
+        })
+
+     return cleaned_data
+        
+
+
 
 class LoginForm(AuthenticationForm):
 

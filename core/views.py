@@ -5,10 +5,24 @@ from .models import Company,Job,Application
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
 
 # Create your views here.
+
+# def register(request):
+#     if request.method=='POST':
+        
+#         form=RegisterForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('login')
+#     else:
+#         form=RegisterForm()
+#     return render(request,'core/register.html',{'form':form})
+
+
 
 def register(request):
     if request.method=='POST':
@@ -18,14 +32,28 @@ def register(request):
             return redirect('login')
     else:
         form=RegisterForm()
+
     return render(request,'core/register.html',{'form':form})
+
+
+
+# def login_view(request):
+#     if request.method=='POST':
+#         form=LoginForm(request,data=request.POST)
+#         if form.is_valid():
+#             user = form.get_user()
+#             if user is not None:
+#                 login(request,user)
+#                 return redirect('home')
+#     else:
+#         form=LoginForm(request)
 
 
 def login_view(request):
     if request.method=='POST':
         form=LoginForm(request,data=request.POST)
         if form.is_valid():
-            user = form.get_user()
+            user=form.get_user()
             if user is not None:
                 login(request,user)
                 return redirect('home')
@@ -35,17 +63,35 @@ def login_view(request):
             
     return render(request,'core/login.html',{'form':form})
 
+# def logout_view(request):
+#     logout(request)
+#     return redirect('login')
+
 def logout_view(request):
     logout(request)
     return redirect('login')
 
 
-def home(request):
-    jobs=Job.objects.exclude(created_by=request.user).order_by('-created_at')[:3]
-   
+# def home(request):
+#     if request.user.is_authenticated:
+#         jobs = Job.objects.exclude(
+#             created_by=request.user
+#         ).order_by("-created_at")[:3]
+#     else:
+#         jobs = Job.objects.all().order_by("-created_at")[:3]
 
-    context={'jobs':jobs}
-    return render(request,'core/home.html',context)
+#     return render(request, "core/home.html", {"jobs": jobs})
+
+
+
+def home(request):
+    if request.user.is_authenticated and request.user.role=='Recruiter':
+        jobs=Job.objects.exclude(created_by=request.user)[:3]
+    else:
+        jobs=Job.objects.order_by('-created_at')[:3]
+
+    return render(request,'core/home.html',{'jobs':jobs})
+
 
 
 
@@ -81,6 +127,7 @@ def list_jobs(request):
             Q(company__name__icontains=search)
         )
     location=request.GET.get('location')
+
     if location:
         jobs = jobs.filter(
             location__icontains=location
@@ -118,22 +165,37 @@ def list_jobs(request):
 
 
 
+# def edit_view(request,pk):
+
+#     if request.user.role!="Recruiter":
+#         return redirect('home')
+#     job=get_object_or_404(Job,pk=pk,created_by=request.user)
+#     if request.method=='POST':
+#         form=JobForm(request.POST,instance=job)
+#         if form.is_valid():
+#             form.save()
+#             return redirect ('home')
+#     else:
+#         form=JobForm(instance=job)
+#     context={
+#         'form':form
+#     }
+#     return render(request,'core/job_form.html',context)
+
+
 def edit_view(request,pk):
-    print("EDIT VIEW CALLED")
-    if request.user.role!="Recruiter":
-        return redirect('home')
-    job=get_object_or_404(Job,pk=pk,created_by=request.user)
+    job=get_object_or_404(Job,pk=pk)
     if request.method=='POST':
-        form=JobForm(request.POST,instance=job)
+        form=JobForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect ('home')
+            return redirect('home')
+
     else:
-        form=JobForm(instance=job)
-    context={
-        'form':form
-    }
-    return render(request,'core/job_form.html',context)
+        form=JobForm(isinstance=job)
+    return render(request,'core/job_form',{'form':form})
+
+
 
 def delete_view(request,pk):
     if request.user.role!="Recruiter":

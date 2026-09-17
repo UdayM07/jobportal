@@ -206,7 +206,7 @@ class JobDetailAPI(generics.RetrieveUpdateDestroyAPIView):
 
 
 
-class Register(generics.CreateAPIView):
+class api_Register(generics.CreateAPIView):
     serializer_class=RegisterSerializer
 
 class ApplyAPI(generics.CreateAPIView):
