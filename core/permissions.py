@@ -19,7 +19,7 @@ class IsRecruiter(BasePermission):
           return True 
        else:
           return (
-             obj.created_by==request.user or request.user.is_superuser
+             obj.created_by==request.user
           )
 
 

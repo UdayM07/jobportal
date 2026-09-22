@@ -1,7 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
-from .models import User,Company,Job
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+
+from .models import User, Job
 
 
 class RegisterForm(UserCreationForm):
@@ -27,25 +27,28 @@ class RegisterForm(UserCreationForm):
                 "class": "w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
             })
 
+        self.fields["username"].widget.attrs["placeholder"] = "Username"
+        self.fields["first_name"].widget.attrs["placeholder"] = "First Name"
+        self.fields["last_name"].widget.attrs["placeholder"] = "Last Name"
+        self.fields["email"].widget.attrs["placeholder"] = "Email Address"
+        self.fields["company"].widget.attrs["placeholder"] = "Company Name"
+
     def clean(self):
-     cleaned_data = super().clean()
+        cleaned_data = super().clean()
 
-     role = cleaned_data.get("role")
-     company = cleaned_data.get("company")
+        role = cleaned_data.get("role")
+        company = cleaned_data.get("company")
 
-     if role == "Recruiter" and not company:
-        raise forms.ValidationError({
-            "company": "Choose a company."
-        })
+        if role == "Recruiter" and not company:
+            self.add_error(
+                "company",
+                "Company name is required for recruiters."
+            )
 
-     if role == "Candidate" and company:
-        raise forms.ValidationError({
-            "company": "Candidates cannot choose a company."
-        })
+        if role == "Candidate":
+            cleaned_data["company"] = ""
 
-     return cleaned_data
-        
-
+        return cleaned_data
 
 
 class LoginForm(AuthenticationForm):
@@ -78,7 +81,7 @@ class JobForm(forms.ModelForm):
 
         for field in self.fields.values():
             field.widget.attrs.update({
-                "class": "w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                "class": "w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
             })
 
         self.fields["title"].widget.attrs["placeholder"] = "Python Django Developer"
@@ -89,25 +92,3 @@ class JobForm(forms.ModelForm):
         self.fields["description"].widget.attrs["placeholder"] = "Enter job description..."
         self.fields["responsibilities"].widget.attrs["placeholder"] = "List job responsibilities..."
         self.fields["requirements"].widget.attrs["placeholder"] = "Required skills and qualifications..."
-
-
-class CompanyForm(forms.ModelForm):
-
-    class Meta:
-        model = Company
-        exclude = ("created_at",)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        for field in self.fields.values():
-            field.widget.attrs.update({
-                "class": "w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            })
-
-        self.fields["name"].widget.attrs["placeholder"] = "Company Name"
-        self.fields["website"].widget.attrs["placeholder"] = "https://company.com"
-        self.fields["email"].widget.attrs["placeholder"] = "Company Email"
-        self.fields["phone"].widget.attrs["placeholder"] = "Phone Number"
-        self.fields["location"].widget.attrs["placeholder"] = "Company Location"
-        self.fields["description"].widget.attrs["placeholder"] = "Write about your company..."

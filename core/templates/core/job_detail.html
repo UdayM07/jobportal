@@ -4,20 +4,20 @@
 
 {% block content %}
 
-<div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
 
-    <div class="bg-white rounded-2xl shadow-lg border p-8">
+    <div class="bg-white rounded-2xl shadow-lg border p-5 sm:p-8">
 
         <!-- Header -->
 
         <div class="border-b pb-6">
 
-            <h1 class="text-4xl font-bold text-gray-900">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 break-words">
                 {{ job.title }}
             </h1>
 
-            <p class="text-lg text-gray-500 mt-2">
-                {{ job.company.name }}
+            <p class="text-base sm:text-lg text-gray-500 mt-2 break-words">
+                {{ job.company }}
             </p>
 
             <div class="flex flex-wrap gap-3 mt-6">
@@ -44,30 +44,54 @@
 
         <!-- Information -->
 
-        <div class="grid md:grid-cols-2 gap-6 mt-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
 
-            <div class="bg-gray-50 rounded-xl p-5">
-                <p class="text-sm text-gray-500">Experience</p>
-                <p class="font-semibold text-lg">{{ job.experience }}</p>
+            <div class="bg-gray-50 rounded-xl border p-5">
+
+                <p class="text-sm text-gray-500">
+                    Experience
+                </p>
+
+                <p class="font-semibold text-lg mt-1">
+                    {{ job.experience }}
+                </p>
+
             </div>
 
-            <div class="bg-gray-50 rounded-xl p-5">
-                <p class="text-sm text-gray-500">Vacancies</p>
-                <p class="font-semibold text-lg">{{ job.vacancy }}</p>
+            <div class="bg-gray-50 rounded-xl border p-5">
+
+                <p class="text-sm text-gray-500">
+                    Vacancies
+                </p>
+
+                <p class="font-semibold text-lg mt-1">
+                    {{ job.vacancy }}
+                </p>
+
             </div>
 
-            <div class="bg-gray-50 rounded-xl p-5">
-                <p class="text-sm text-gray-500">Application Deadline</p>
-                <p class="font-semibold text-lg">
+            <div class="bg-gray-50 rounded-xl border p-5">
+
+                <p class="text-sm text-gray-500">
+                    Application Deadline
+                </p>
+
+                <p class="font-semibold text-lg mt-1">
                     {{ job.application_deadline|date:"d M Y" }}
                 </p>
+
             </div>
 
-            <div class="bg-gray-50 rounded-xl p-5">
-                <p class="text-sm text-gray-500">Recruiter</p>
-                <p class="font-semibold text-lg">
+            <div class="bg-gray-50 rounded-xl border p-5">
+
+                <p class="text-sm text-gray-500">
+                    Recruiter
+                </p>
+
+                <p class="font-semibold text-lg mt-1 break-all">
                     {{ job.created_by.username }}
                 </p>
+
             </div>
 
         </div>
@@ -80,9 +104,13 @@
                 Job Description
             </h2>
 
-            <p class="text-gray-700 leading-8">
-                {{ job.description }}
-            </p>
+            <div class="bg-gray-50 border rounded-xl p-5">
+
+                <p class="text-gray-700 leading-8 whitespace-pre-line break-words">
+                    {{ job.description|default:"Not provided." }}
+                </p>
+
+            </div>
 
         </section>
 
@@ -94,9 +122,13 @@
                 Responsibilities
             </h2>
 
-            <p class="text-gray-700 leading-8">
-                {{ job.responsibilities }}
-            </p>
+            <div class="bg-gray-50 border rounded-xl p-5">
+
+                <p class="text-gray-700 leading-8 whitespace-pre-line break-words">
+                    {{ job.responsibilities|default:"Not provided." }}
+                </p>
+
+            </div>
 
         </section>
 
@@ -108,9 +140,13 @@
                 Requirements
             </h2>
 
-            <p class="text-gray-700 leading-8">
-                {{ job.requirements }}
-            </p>
+            <div class="bg-gray-50 border rounded-xl p-5">
+
+                <p class="text-gray-700 leading-8 whitespace-pre-line break-words">
+                    {{ job.requirements|default:"Not provided." }}
+                </p>
+
+            </div>
 
         </section>
 
@@ -119,20 +155,50 @@
         <div class="flex flex-col sm:flex-row gap-4 mt-12">
 
             <a href="{% url 'list_jobs' %}"
-               class="flex-1 text-center border border-gray-300 rounded-xl py-3 hover:bg-gray-100 transition">
+               class="w-full sm:flex-1 text-center border border-gray-300 rounded-xl py-3 font-semibold hover:bg-gray-100 transition">
 
                 Back to Jobs
 
             </a>
 
-            {% if user.is_authenticated and user.role == "Candidate" %}
+            {% if user.is_authenticated %}
 
-            <a href="{% url 'apply_job' job.pk %}"
-               class="flex-1 text-center bg-blue-600 text-white rounded-xl py-3 hover:bg-blue-700 transition">
+                {% if user.role == "Candidate" %}
 
-                Apply Now
+                    {% if not already_applied %}
 
-            </a>
+                        <a href="{% url 'apply_job' job.pk %}"
+                           class="w-full sm:flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 font-semibold transition">
+
+                            Apply Now
+
+                        </a>
+
+                    {% endif %}
+
+                {% elif user.role == "Recruiter" %}
+
+                    {% if job.created_by == user %}
+
+                        <a href="{% url 'edit' job.pk %}"
+                           class="w-full sm:flex-1 text-center bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl py-3 font-semibold transition">
+
+                            Edit Job
+
+                        </a>
+
+                    {% endif %}
+
+                {% endif %}
+
+            {% else %}
+
+                <a href="{% url 'login' %}"
+                   class="w-full sm:flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 font-semibold transition">
+
+                    Login to Apply
+
+                </a>
 
             {% endif %}
 

@@ -2,21 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
-class Company(models.Model):
-    name = models.CharField(max_length=200)
-    logo = models.ImageField(upload_to="company_logos/", blank=True, null=True)
-    website = models.URLField(blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
-    phone = models.CharField(max_length=15, blank=True, null=True)
-    location = models.CharField(max_length=150)
-    description = models.TextField()
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.name
-
-
 class User(AbstractUser):
 
     ROLE_CHOICES = (
@@ -30,12 +15,9 @@ class User(AbstractUser):
         default="Candidate",
     )
 
-    company = models.ForeignKey(
-        Company,
-        on_delete=models.SET_NULL,
-        null=True,
+    company = models.CharField(
+        max_length=100,
         blank=True,
-        related_name="recruiters",
     )
 
     def __str__(self):
@@ -67,10 +49,8 @@ class Job(models.Model):
 
     title = models.CharField(max_length=200)
 
-    company = models.ForeignKey(
-        Company,
-        on_delete=models.CASCADE,
-        related_name="jobs",
+    company = models.CharField(
+        max_length=100,
     )
 
     created_by = models.ForeignKey(
@@ -116,13 +96,21 @@ class Job(models.Model):
         return self.title
 
 
-
-
 class Application(models.Model):
-    job=models.ForeignKey(Job,on_delete=models.CASCADE)
-    candidate=models.ForeignKey(User, on_delete=models.CASCADE)
-  
-    applied_at=models.DateTimeField( auto_now_add=True)
+
+    job = models.ForeignKey(
+        Job,
+        on_delete=models.CASCADE,
+    )
+
+    candidate = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+
+    applied_at = models.DateTimeField(
+        auto_now_add=True,
+    )
 
     class Meta:
-        unique_together=('job','candidate')
+        unique_together = ("job", "candidate")

@@ -4,141 +4,215 @@
 
 {% block content %}
 
-<div class="min-h-[85vh] flex items-center justify-center px-4 py-10">
+<div class="min-h-[85vh] flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
 
-    <div class="w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden grid lg:grid-cols-2">
+    <div class="w-full max-w-6xl overflow-hidden rounded-3xl bg-white shadow-2xl grid lg:grid-cols-2">
 
-        <!-- Left Section -->
+        <!-- ================= LEFT SIDE ================= -->
 
-        <div class="hidden lg:flex flex-col justify-center bg-gradient-to-br from-blue-700 to-indigo-700 text-white p-14">
+        <div class="hidden lg:flex flex-col justify-center bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 text-white p-14">
 
             <h1 class="text-5xl font-bold leading-tight">
+
                 Find Your
                 <br>
                 Dream Job
+
             </h1>
 
-            <p class="mt-6 text-lg text-blue-100 leading-8">
-                Join thousands of professionals and recruiters.
-                Build your profile, explore opportunities and land your dream career.
+            <p class="mt-6 text-lg leading-8 text-blue-100">
+
+                Join thousands of candidates and recruiters.
+
+                Create your profile, discover opportunities,
+                and build your career with JobPortal.
+
             </p>
 
             <div class="mt-12 space-y-5">
 
                 <div class="flex items-center gap-3">
-                    <div class="w-3 h-3 rounded-full bg-white"></div>
-                    <p>Create Candidate Account</p>
+
+                    <div class="h-3 w-3 rounded-full bg-white"></div>
+
+                    <span>Create Candidate Account</span>
+
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <div class="w-3 h-3 rounded-full bg-white"></div>
-                    <p>Recruit Top Talent</p>
+
+                    <div class="h-3 w-3 rounded-full bg-white"></div>
+
+                    <span>Hire Top Talent</span>
+
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <div class="w-3 h-3 rounded-full bg-white"></div>
-                    <p>Post Jobs & Hire Faster</p>
+
+                    <div class="h-3 w-3 rounded-full bg-white"></div>
+
+                    <span>Post Jobs & Recruit Faster</span>
+
                 </div>
 
             </div>
 
         </div>
 
-        <!-- Right Section -->
+        <!-- ================= RIGHT SIDE ================= -->
 
-        <div class="p-8 md:p-12">
+        <div class="p-6 sm:p-8 lg:p-12">
 
             <h2 class="text-3xl font-bold text-gray-800">
+
                 Create Account
+
             </h2>
 
-            <p class="text-gray-500 mt-2 mb-8">
-                Start your journey with JobPortal
+            <p class="mt-2 mb-8 text-gray-500">
+
+                Start your journey with JobPortal.
+
             </p>
 
-            <form method="POST" class="space-y-5">
+            <form method="POST" class="space-y-6" novalidate>
 
                 {% csrf_token %}
 
                 {% if form.non_field_errors %}
-                <div class="bg-red-100 text-red-700 rounded-lg p-3">
+
+                <div class="rounded-xl border border-red-300 bg-red-100 px-4 py-3 text-red-700">
+
                     {{ form.non_field_errors }}
+
                 </div>
+
                 {% endif %}
 
-                <!-- Username + Email -->
+                <!-- Username & Email -->
 
-                <div class="grid md:grid-cols-2 gap-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
                     <div>
-                        <label class="block mb-2 font-medium">
+
+                        <label class="mb-2 block font-medium text-gray-700">
+
                             Username
+
                         </label>
 
                         {{ form.username }}
-                        {{ form.username.errors }}
+
+                        <div class="mt-1 text-sm text-red-600">
+
+                            {{ form.username.errors }}
+
+                        </div>
 
                     </div>
 
                     <div>
-                        <label class="block mb-2 font-medium">
+
+                        <label class="mb-2 block font-medium text-gray-700">
+
                             Email
+
                         </label>
 
                         {{ form.email }}
-                        {{ form.email.errors }}
+
+                        <div class="mt-1 text-sm text-red-600">
+
+                            {{ form.email.errors }}
+
+                        </div>
 
                     </div>
 
                 </div>
 
-                <!-- First + Last Name -->
+                <!-- First Name & Last Name -->
 
-                <div class="grid md:grid-cols-2 gap-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
                     <div>
-                        <label class="block mb-2 font-medium">
+
+                        <label class="mb-2 block font-medium text-gray-700">
+
                             First Name
+
                         </label>
 
                         {{ form.first_name }}
-                        {{ form.first_name.errors }}
+
+                        <div class="mt-1 text-sm text-red-600">
+
+                            {{ form.first_name.errors }}
+
+                        </div>
 
                     </div>
 
                     <div>
-                        <label class="block mb-2 font-medium">
+
+                        <label class="mb-2 block font-medium text-gray-700">
+
                             Last Name
+
                         </label>
 
                         {{ form.last_name }}
-                        {{ form.last_name.errors }}
+
+                        <div class="mt-1 text-sm text-red-600">
+
+                            {{ form.last_name.errors }}
+
+                        </div>
 
                     </div>
 
                 </div>
 
-                <!-- Role + Company -->
+                <!-- Role -->
 
-                <div class="grid md:grid-cols-2 gap-5">
+                <div>
 
-                    <div>
-                        <label class="block mb-2 font-medium">
-                            Role
-                        </label>
+                    <label class="mb-2 block font-medium text-gray-700">
 
-                        {{ form.role }}
+                        Register As
+
+                    </label>
+
+                    {{ form.role }}
+
+                    <div class="mt-1 text-sm text-red-600">
+
                         {{ form.role.errors }}
 
                     </div>
 
-                    <div id="company-field">
+                </div>
 
-                        <label class="block mb-2 font-medium">
-                            Company
-                        </label>
+                <!-- Company -->
 
-                        {{ form.company }}
+                <div id="company-wrapper">
+
+                    <label class="mb-2 block font-medium text-gray-700">
+
+                        Company Name
+
+                    </label>
+
+                    {{ form.company }}
+
+                    <p class="mt-2 text-sm text-gray-500">
+
+                        Recruiters must enter their company name.
+
+                    </p>
+
+                    <div class="mt-1 text-sm text-red-600">
+
                         {{ form.company.errors }}
 
                     </div>
@@ -147,52 +221,69 @@
 
                 <!-- Password -->
 
-                <div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
-                    <label class="block mb-2 font-medium">
-                        Password
-                    </label>
+                    <div>
 
-                    {{ form.password1 }}
-                    {{ form.password1.errors }}
+                        <label class="mb-2 block font-medium text-gray-700">
 
-                </div>
+                            Password
 
-                <!-- Confirm Password -->
+                        </label>
 
-                <div>
+                        {{ form.password1 }}
 
-                    <label class="block mb-2 font-medium">
-                        Confirm Password
-                    </label>
+                        <div class="mt-1 text-sm text-red-600">
 
-                    {{ form.password2 }}
-                    {{ form.password2.errors }}
+                            {{ form.password1.errors }}
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <label class="mb-2 block font-medium text-gray-700">
+
+                            Confirm Password
+
+                        </label>
+
+                        {{ form.password2 }}
+
+                        <div class="mt-1 text-sm text-red-600">
+
+                            {{ form.password2.errors }}
+
+                        </div>
+
+                    </div>
 
                 </div>
 
                 <button
                     type="submit"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition">
+                    class="w-full rounded-xl bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700">
 
                     Create Account
 
                 </button>
 
+                <p class="text-center text-gray-600">
+
+                    Already have an account?
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="font-semibold text-blue-600 hover:underline">
+
+                        Login
+
+                    </a>
+
+                </p>
+
             </form>
-
-            <p class="text-center mt-6 text-gray-500">
-
-                Already have an account?
-
-                <a href="{% url 'login' %}"
-                   class="text-blue-600 font-semibold hover:underline">
-
-                    Login
-
-                </a>
-
-            </p>
 
         </div>
 
@@ -202,27 +293,42 @@
 
 <script>
 
-const roleField = document.getElementById("id_role");
-const companyField = document.getElementById("company-field");
+document.addEventListener("DOMContentLoaded", function () {
 
-function toggleCompany() {
+    const roleField = document.getElementById("id_role");
 
-    if(roleField.value === "Recruiter"){
+    const companyWrapper = document.getElementById("company-wrapper");
 
-        companyField.style.display = "block";
+    const companyInput = document.getElementById("id_company");
+
+    function toggleCompanyField() {
+
+        if (roleField.value === "Recruiter") {
+
+            companyWrapper.classList.remove("hidden");
+
+            companyInput.required = true;
+
+        } else {
+
+            companyWrapper.classList.add("hidden");
+
+            companyInput.required = false;
+
+            companyInput.value = "";
+
+        }
 
     }
-    else{
 
-        companyField.style.display = "none";
+    toggleCompanyField();
 
-    }
+    roleField.addEventListener(
+        "change",
+        toggleCompanyField
+    );
 
-}
-
-toggleCompany();
-
-roleField.addEventListener("change",toggleCompany);
+});
 
 </script>
 

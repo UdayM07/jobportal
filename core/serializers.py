@@ -1,26 +1,36 @@
 from rest_framework import serializers
-from .models import Job, User,Application
 
+from .models import Job, User, Application
 
 
 # ---------------- Job Serializer ----------------
+
 class JobSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Job
         fields = "__all__"
-        read_only_fields = [
+        read_only_fields = (
+            "company",
             "created_by",
             "created_at",
             "updated_at",
-        ]
+        )
 
 
 # ---------------- Register Serializer ----------------
+
 class RegisterSerializer(serializers.ModelSerializer):
 
-    password1 = serializers.CharField(write_only=True)
-    password2 = serializers.CharField(write_only=True)
+    password1 = serializers.CharField(
+        write_only=True,
+        min_length=8,
+    )
+
+    password2 = serializers.CharField(
+        write_only=True,
+        min_length=8,
+    )
 
     class Meta:
         model = User
@@ -37,39 +47,29 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
 
-        if attrs["password1"] != attrs["password2"]:
-            raise serializers.ValidationError(
-                {"password2": "Passwords do not match."}
-            )
+        password1 = attrs.get("password1")
+        password2 = attrs.get("password2")
 
-        if attrs["role"] == "Recruiter" and not attrs.get("company"):
-            raise serializers.ValidationError(
-                {"company": "Choose a company if you are a Recruiter."}
-            )
+        role = attrs.get("role")
+        company = attrs.get("company", "").strip()
 
-        if attrs["role"] == "Candidate" and attrs.get("company"):
-            raise serializers.ValidationError(
-                {"company": "Candidates cannot choose a company."}
-            )
+        if password1 != password2:
+            raise serializers.ValidationError({
+                "password2": "Passwords do not match."
+            })
 
-        if len(attrs["password1"]) < 8:
-            raise serializers.ValidationError(
-                {"password1": "Password must contain at least 8 characters."}
-            )
+        if role == "Recruiter" and not company:
+            raise serializers.ValidationError({
+                "company": "Company name is required for recruiters."
+            })
 
-        has_upper = False
+        if role == "Candidate":
+            attrs["company"] = ""
 
-        for ch in attrs["password1"]:
-            if ch.isupper():
-                has_upper = True
-                break
-
-        if not has_upper:
-            raise serializers.ValidationError(
-                {
-                    "password1": "Password must contain at least one uppercase letter."
-                }
-            )
+        if not any(ch.isupper() for ch in password1):
+            raise serializers.ValidationError({
+                "password1": "Password must contain at least one uppercase letter."
+            })
 
         return attrs
 
@@ -78,15 +78,21 @@ class RegisterSerializer(serializers.ModelSerializer):
         password = validated_data.pop("password1")
         validated_data.pop("password2")
 
-        user = User.objects.create_user(
+        return User.objects.create_user(
             password=password,
             **validated_data
         )
 
-        return user
+
+# ---------------- Application Serializer ----------------
 
 class ApplicationSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model=Application 
-        fields='__all__'
-        read_only_fields = ["job", "candidate", "applied_at"]
+        model = Application
+        fields = "__all__"
+        read_only_fields = (
+            "job",
+            "candidate",
+            "applied_at",
+        )

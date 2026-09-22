@@ -6,48 +6,46 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
         {% block title %}JobPortal{% endblock %}
     </title>
 
-    <link rel="stylesheet"
-          href="{% static 'core/css/output.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/output.css' %}">
 
 </head>
 
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
-<!-- ================= Navbar ================= -->
+<!-- ================= NAVBAR ================= -->
 
 <nav class="bg-white shadow-md sticky top-0 z-50">
 
-    <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div class="flex items-center justify-between h-16">
+        <div class="flex justify-between items-center h-16">
 
             <!-- Logo -->
 
             <a href="{% url 'home' %}"
-               class="text-2xl font-bold text-blue-600">
+               class="text-2xl font-bold text-blue-600 hover:text-blue-700 transition">
 
                 JobPortal
 
             </a>
 
-            <!-- Navigation -->
+            <!-- Desktop Menu -->
 
             <div class="hidden md:flex items-center gap-6">
 
                 <a href="{% url 'home' %}"
-                   class="text-gray-700 hover:text-blue-600 transition">
+                   class="text-gray-700 hover:text-blue-600 font-medium transition">
                     Home
                 </a>
 
                 <a href="{% url 'list_jobs' %}"
-                   class="text-gray-700 hover:text-blue-600 transition">
+                   class="text-gray-700 hover:text-blue-600 font-medium transition">
                     Jobs
                 </a>
 
@@ -56,7 +54,7 @@
                     {% if user.role == "Recruiter" %}
 
                         <a href="{% url 'job_form' %}"
-                           class="text-gray-700 hover:text-blue-600 transition">
+                           class="text-gray-700 hover:text-blue-600 font-medium transition">
                             Post Job
                         </a>
 
@@ -65,60 +63,134 @@
                     {% if user.role == "Candidate" %}
 
                         <a href="{% url 'my_applications' %}"
-                           class="text-gray-700 hover:text-blue-600 transition">
+                           class="text-gray-700 hover:text-blue-600 font-medium transition">
                             My Applications
                         </a>
 
                     {% endif %}
 
                     <a href="{% url 'profile' %}"
-                       class="text-gray-700 hover:text-blue-600 transition">
+                       class="text-gray-700 hover:text-blue-600 font-medium transition">
                         Profile
                     </a>
 
+                    <span class="text-sm text-gray-500">
+                        Hi, {{ user.username }}
+                    </span>
+
                     <a href="{% url 'logout' %}"
-                       class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-xl transition">
+                       class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">
                         Logout
                     </a>
 
                 {% else %}
 
                     <a href="{% url 'login' %}"
-                       class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl transition">
-
+                       class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
                         Login
+                    </a>
 
+                    <a href="{% url 'register' %}"
+                       class="border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-lg transition">
+                        Register
                     </a>
 
                 {% endif %}
 
             </div>
 
-            <!-- Mobile -->
+            <!-- Mobile Menu Button -->
 
-            <div class="md:hidden">
+            <button
+                id="mobile-menu-button"
+                class="md:hidden flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 transition">
 
-                {% if user.is_authenticated %}
+                <svg
+                    class="w-7 h-7"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24">
 
-                    <a href="{% url 'profile' %}"
-                       class="bg-blue-600 text-white px-4 py-2 rounded-lg">
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M4 6h16M4 12h16M4 18h16">
+                    </path>
 
-                        Profile
+                </svg>
 
-                    </a>
+            </button>
 
-                {% else %}
+        </div>
 
-                    <a href="{% url 'login' %}"
-                       class="bg-blue-600 text-white px-4 py-2 rounded-lg">
+    </div>
 
-                        Login
+    <!-- ================= MOBILE MENU ================= -->
 
+    <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-white border-t">
+
+        <div class="px-5 py-4 flex flex-col gap-3">
+
+            <a href="{% url 'home' %}"
+               class="text-gray-700 hover:text-blue-600">
+                Home
+            </a>
+
+            <a href="{% url 'list_jobs' %}"
+               class="text-gray-700 hover:text-blue-600">
+                Jobs
+            </a>
+
+            {% if user.is_authenticated %}
+
+                {% if user.role == "Recruiter" %}
+
+                    <a href="{% url 'job_form' %}"
+                       class="text-gray-700 hover:text-blue-600">
+                        Post Job
                     </a>
 
                 {% endif %}
 
-            </div>
+                {% if user.role == "Candidate" %}
+
+                    <a href="{% url 'my_applications' %}"
+                       class="text-gray-700 hover:text-blue-600">
+                        My Applications
+                    </a>
+
+                {% endif %}
+
+                <a href="{% url 'profile' %}"
+                   class="text-gray-700 hover:text-blue-600">
+                    Profile
+                </a>
+
+                <div class="text-sm text-gray-500">
+                    Logged in as <strong>{{ user.username }}</strong>
+                </div>
+
+                <a href="{% url 'logout' %}"
+                   class="bg-red-600 text-center text-white py-2 rounded-lg hover:bg-red-700 transition">
+                    Logout
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'login' %}"
+                   class="bg-blue-600 text-white text-center py-2 rounded-lg">
+                    Login
+                </a>
+
+                <a href="{% url 'register' %}"
+                   class="border border-blue-600 text-blue-600 text-center py-2 rounded-lg">
+                    Register
+                </a>
+
+            {% endif %}
 
         </div>
 
@@ -126,19 +198,28 @@
 
 </nav>
 
-<!-- ================= Messages ================= -->
+<!-- ================= MESSAGES ================= -->
 
 {% if messages %}
 
-<div class="max-w-7xl mx-auto w-full mt-5 px-6">
+<div class="max-w-7xl mx-auto w-full mt-5 px-4 sm:px-6">
 
     {% for message in messages %}
 
-    <div class="message bg-green-100 border border-green-300 text-green-700 rounded-xl p-4 mb-3">
+        <div class="message rounded-xl border px-5 py-4 mb-3
+            {% if message.tags == 'success' %}
+                bg-green-100 border-green-300 text-green-700
+            {% elif message.tags == 'warning' %}
+                bg-yellow-100 border-yellow-300 text-yellow-700
+            {% elif message.tags == 'error' %}
+                bg-red-100 border-red-300 text-red-700
+            {% else %}
+                bg-blue-100 border-blue-300 text-blue-700
+            {% endif %}">
 
-        {{ message }}
+            {{ message }}
 
-    </div>
+        </div>
 
     {% endfor %}
 
@@ -146,9 +227,9 @@
 
 {% endif %}
 
-<!-- ================= Main ================= -->
+<!-- ================= MAIN ================= -->
 
-<main class="flex-1 max-w-7xl mx-auto w-full px-6 py-8">
+<main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
     {% block content %}
 
@@ -156,33 +237,91 @@
 
 </main>
 
-<!-- ================= Footer ================= -->
+<!-- ===== PART 1 ENDS HERE ===== -->
 
-<footer class="bg-white border-t mt-10">
 
-    <div class="max-w-7xl mx-auto py-6 px-6 text-center">
+<!-- ================= FOOTER ================= -->
 
-        <p class="text-gray-500">
+<footer class="bg-white border-t mt-12">
 
-            © 2026 JobPortal • Built with Django & Tailwind CSS
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        </p>
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+
+            <div class="text-center md:text-left">
+
+                <h2 class="text-xl font-bold text-blue-600">
+                    JobPortal
+                </h2>
+
+                <p class="text-gray-500 mt-1 text-sm">
+                    Connecting recruiters and candidates with ease.
+                </p>
+
+            </div>
+
+            <div class="text-center md:text-right">
+
+                <p class="text-gray-500 text-sm">
+                    © 2026 JobPortal
+                </p>
+
+                <p class="text-gray-400 text-xs mt-1">
+                    Built with Django • DRF • PostgreSQL • Tailwind CSS
+                </p>
+
+            </div>
+
+        </div>
 
     </div>
 
 </footer>
 
+<!-- ================= JAVASCRIPT ================= -->
+
 <script>
 
-setTimeout(function(){
+const mobileButton = document.getElementById("mobile-menu-button");
+const mobileMenu = document.getElementById("mobile-menu");
 
-    document.querySelectorAll(".message").forEach(function(message){
+mobileButton.addEventListener("click", function () {
 
-        message.style.display="none";
+    mobileMenu.classList.toggle("hidden");
+
+});
+
+
+setTimeout(function () {
+
+    document.querySelectorAll(".message").forEach(function (message) {
+
+        message.classList.add(
+            "opacity-0",
+            "transition-opacity",
+            "duration-500"
+        );
+
+        setTimeout(function () {
+
+            message.remove();
+
+        }, 500);
 
     });
 
-},3000);
+}, 3000);
+
+
+window.addEventListener("resize", function () {
+
+    if (window.innerWidth >= 768) {
+
+        mobileMenu.classList.add("hidden");
+
+    }
+
+});
 
 </script>
 

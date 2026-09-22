@@ -1,41 +1,97 @@
 from django.contrib import admin
-from .models import User,Company,Job,Application
-
 from django.contrib.auth.admin import UserAdmin
 
+from .models import User, Job, Application
 
+
+# ---------------- User ----------------
 
 @admin.register(User)
-class CustomUserMOdel(admin.ModelAdmin):
-    list_display=['id','username']
-    search_fields=['username']
-    ordering=['username']
-    list_filter=['is_active','is_staff','role']
+class CustomUserAdmin(UserAdmin):
 
-@admin.register(Company)
-class CustomCompanyModel(admin.ModelAdmin):
-    list_display=['name','email','location']
-    search_fields=['name']
-    ordering=['name']
+    list_display = (
+        "id",
+        "username",
+        "email",
+        "role",
+        "company",
+        "is_active",
+        "is_staff",
+    )
+
+    search_fields = (
+        "username",
+        "email",
+        "company",
+    )
+
+    ordering = (
+        "username",
+    )
+
+    list_filter = (
+        "role",
+        "is_active",
+        "is_staff",
+    )
 
 
+# ---------------- Job ----------------
 
 @admin.register(Job)
-class CustomJobModel(admin.ModelAdmin):
+class CustomJobAdmin(admin.ModelAdmin):
 
-    list_display=['id','title','company','location','salary','work_mode','work_mode','experience']
-    search_fields=['title',"company"]
-    ordering=['title',"company"]
-    list_editable=['salary','work_mode']
+    list_display = (
+        "id",
+        "title",
+        "company",
+        "created_by",
+        "location",
+        "salary",
+        "job_type",
+        "work_mode",
+        "experience",
+        "created_at",
+    )
+
+    search_fields = (
+        "title",
+        "company",
+        "created_by__username",
+    )
+
+    list_filter = (
+        "job_type",
+        "work_mode",
+        "experience",
+    )
+
+    ordering = (
+        "-created_at",
+    )
+
+    list_editable = (
+        "salary",
+        "work_mode",
+    )
+
+
+# ---------------- Application ----------------
 
 @admin.register(Application)
-class CustomApplication(admin.ModelAdmin):
-    list_display=['job','candidate','applied_at']
-    search_fields=['job', 'candidate']
-    list_editable=['candidate']
+class CustomApplicationAdmin(admin.ModelAdmin):
 
-    def job_created_by(self, obj):
-        return obj.job.created_by
+    list_display = (
+        "job",
+        "candidate",
+        "applied_at",
+    )
 
+    search_fields = (
+        "job__title",
+        "candidate__username",
+    )
 
-    
+    ordering = (
+        "-applied_at",
+    )
